@@ -26,12 +26,12 @@ Puppet::Type.type(:internet_service).provide(:linux) do
     lines.each do |line|
       if (m = line.match service_regex)
         internetservice_list << {
-          :name          => m[1].strip,
-          :port          => m[2].strip,
-          :protocol      => m[3].strip,
-          :service_alias => m[4].to_s.split(' '),
-          :comment       => m[6].to_s.strip,
-          :file          => filename
+          :name            => m[1].strip,
+          :port            => m[2].strip,
+          :protocol        => m[3].strip,
+          :service_aliases => m[4].to_s.split(' '),
+          :comment         => m[6].to_s.strip,
+          :file            => filename
         }
       else
         raise Puppet::Error, %{#{filename} is malformed; "#{line}" did not match "#{service_regex.to_s}"}
@@ -51,7 +51,7 @@ Puppet::Type.type(:internet_service).provide(:linux) do
       port_proto = "#{provider.send(:port)}/#{provider.send(:protocol)}"
       port_proto = self.format_value(port_proto)
 
-      service_alias = provider.send(:service_alias)
+      service_alias = provider.send(:service_aliases)
       if service_alias
         service_alias = self.format_value(service_alias.join(' '))
       end

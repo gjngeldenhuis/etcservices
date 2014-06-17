@@ -11,7 +11,7 @@ Puppet::Type.type(:internet_service).provide(:linux) do
   end
 
   def self.target_files
-    '/etc/services'
+    ['/etc/services']
   end
 
   def self.parse_file(filename, contents)
